@@ -1,0 +1,50 @@
+*** Settings ***
+Documentation     Example test case using the gherkin syntax
+...               (ATDD - Acceptance Test Driven Development)
+...
+...               This test has a workflow similar to the keyword-driven
+...               examples. The difference is that the keywords use higher
+...               abstraction level and their arguments are embedded into
+...               the keyword names.
+...
+...               This kind of _gherkin_ syntax has been made popular by
+...               [http://cukes.info|Cucumber]. It works well especially when
+...               tests act as examples that need to be easily understood also
+...               by the business people.
+
+Library           Selenium2Library
+
+*** Variables ***
+${SERVER}         ${paymentshost}:${paymentsport}
+${BROWSER}        HtmlUnit
+${DELAY}          50
+${CHECKOUT URL}   http://${SERVER}/payments-app/faces/checkout.xhtml
+
+
+*** Test Cases ***
+Valid Checkout
+    Given Checkoutpage Is Loaded
+    When User types "12345" "4111" "1220" "EUR"
+    And User pushes checkout
+    Then Result is "TXN CONFIRMED"
+
+
+*** Keywords ***
+Checkoutpage Is Loaded
+    Open Browser    ${CHECKOUT URL}    ${BROWSER}
+    Set Selenium Speed    ${DELAY}
+    Title Should Be    PAYMENTS - CHECKOUT
+
+User types "${amt}" "${ccn}" "${expiry}" "${ccy}"
+    Input Text    amt       ${amt}
+    Input Text    ccn       ${ccn}
+    Input Text    expiry    ${expiry}
+    Input Text    ccy       ${ccy}
+
+User pushes checkout
+    Click Button    checkout
+
+Result is "${result}"
+    Location Should Contain     ${CHECKOUT URL}
+    Title Should Be             ${result}
+    Page Should Contain         Transaction successfully processed

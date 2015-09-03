@@ -1,0 +1,47 @@
+*** Settings ***
+Documentation     A resource file with reusable keywords and variables.
+...
+...               The system specific keywords created here form our own
+...               domain specific language. They utilize keywords provided
+...               by the imported Selenium2Library.
+Library           Selenium2Library
+
+*** Variables ***
+${SERVER}         ${paymentshost}:${paymentsport}
+${BROWSER}        HtmlUnit
+${DELAY}          50
+${CHECKOUT URL}   http://${SERVER}/payments-app/faces/checkout.xhtml
+
+*** Keywords ***
+Open Browser To Checkout Page
+    Open Browser    ${CHECKOUT URL}    ${BROWSER}
+    Set Selenium Speed    ${DELAY}
+    Checkout Page Should Be Open
+
+Checkout Page Should Be Open
+    Title Should Be    PAYMENTS - CHECKOUT
+
+Success Page Should Be Open
+    Location Should Contain     ${CHECKOUT URL}
+    Title Should Be             TXN CONFIRMED
+    Page Should Contain         Transaction successfully processed
+
+Checkout Error Should Occurr
+    Page Should Contain         muss auf Ausdruck
+    Location Should Contain     ${CHECKOUT URL}
+
+Input Amount
+    [Arguments]    ${amt}
+    Input Text    amt    ${amt}
+Input CreditCard
+    [Arguments]    ${ccn}
+    Input Text    ccn    ${ccn}
+Input Expiry
+    [Arguments]    ${expiry}
+    Input Text    expiry    ${expiry}
+Input Currency
+    [Arguments]    ${ccy}
+    Input Text    ccy    ${ccy}
+
+Submit Checkout
+    Click Button    checkout

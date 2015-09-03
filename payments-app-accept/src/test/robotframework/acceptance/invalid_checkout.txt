@@ -1,0 +1,16 @@
+*** Settings ***
+Documentation     A test suite with a single test for valid checkout on PAYMENTS-APP
+...
+...               This test has a workflow that is created using keywords in
+...               the imported resource file.
+Resource          resource.txt
+
+*** Test Cases ***
+Valid Checkout
+    Open Browser To Checkout Page
+    Input Amount        1234
+    Input CreditCard    411
+    Input Expiry        1220
+    Input Currency      EUR
+    Submit Checkout
+    Checkout Error Should Occurr
