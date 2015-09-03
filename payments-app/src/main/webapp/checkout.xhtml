@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="PAYMENTS - CHECKOUT"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <form jsf:id="checkoutForm" jsf:prependId="false">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Amount" for="amt" />
+                    <input jsf:id="amt" jsf:value="#{checkout.txn.amount}"
+                        required="true" type="number" min="100" max="50000" />
+                    <h:outputLabel value="Creditcard Number" for="ccn" />
+                    <input jsf:id="ccn" jsf:value="#{checkout.txn.creditCard}"
+                        required="true" type="text" pattern="\d{4,16}" />
+                    <h:outputLabel value="Expiry" for="expiry" />
+                    <input jsf:id="expiry" jsf:value="#{checkout.txn.expiry}"
+                        required="true" type="text" pattern="(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})" />
+                    <h:outputLabel value="Currency" for="ccy" />
+                    <input jsf:id="ccy" jsf:value="#{checkout.txn.currency}"
+                        required="true" type="text" pattern="(EUR)|(USD)|(GBP)" />
+                </h:panelGrid>
+                <br />
+                <h:commandButton id="checkout" action="#{checkout.checkout}" value="CHECKOUT" />
+                <br />
+            </form>
+        </ui:define>
+    </ui:composition>
+
+</html>
