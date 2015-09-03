@@ -25,4 +25,4 @@ It uses the gherkin style for the tests and also tests the UI.
 
 **payments-build:**
 
-The project contains scripts which are needed for a Jenkins build pipeline setu.
+The project contains scripts which are needed for a Jenkins build pipeline setup.
